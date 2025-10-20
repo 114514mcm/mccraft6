@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网站大全 - 发现互联网精华</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 所有CSS样式保持不变，与之前相同 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .search-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .search-box {
+            display: flex;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-radius: 50px;
+            overflow: hidden;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .search-box button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 0 2rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        .search-box button:hover {
+            background: #ff5252;
+        }
+        
+        .category-nav {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .category-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            list-style: none;
+        }
+        
+        .category-list li a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.5rem 1.2rem;
+            background: white;
+            border-radius: 30px;
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+        }
+        
+        .category-list li a:hover,
+        .category-list li a.active {
+            background: #6a11cb;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #eee;
+            color: #444;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: #6a11cb;
+        }
+        
+        .websites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .website-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .website-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            padding: 1.5rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-header::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-body p {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            flex-grow: 1;
+        }
+        
+        .visit-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #6a11cb;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s;
+            align-self: flex-start;
+        }
+        
+        .visit-btn:hover {
+            background: #580da8;
+        }
+        
+        .security-notice {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff3cd;
+            color: #856404;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            border: 1px solid #ffeaa7;
+        }
+        
+        .microsoft-product .card-header {
+            background: linear-gradient(135deg, #0078d4 0%, #00bcf2 100%);
+        }
+        
+        .bing-product .card-header {
+            background: linear-gradient(135deg, #00809d 0%, #00a4ef 100%);
+        }
+        
+        .onedrive-product .card-header {
+            background: linear-gradient(135deg, #28a8ea 0%, #0078d7 100%);
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: #ecf0f1;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+        
+        footer p {
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            list-style: none;
+            margin-top: 1rem;
+        }
+        
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #3498db;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .websites-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .category-list {
+                gap: 5px;
+            }
+            
+            .category-list li a {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .websites-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-box {
+                flex-direction: column;
+                border-radius: 12px;
+            }
+            
+            .search-box input {
+                border-radius: 12px 12px 0 0;
+            }
+            
+            .search-box button {
+                padding: 0.8rem;
+                border-radius: 0 0 12px 12px;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .website-card {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部区域 -->
+    <header>
+        <h1><i class="fas fa-globe"></i> 网站大全</h1>
+        <p>发现互联网上的精彩网站，为您的工作、学习和生活提供便利</p>
+    </header>
+    
+    <!-- 搜索区域 -->
+    <div class="search-container">
+        <div class="search-box">
+            <input type="text" placeholder="搜索您需要的网站...">
+            <button><i class="fas fa-search"></i> 搜索</button>
+        </div>
+    </div>
+    
+    <!-- 分类导航 -->
+    <nav class="category-nav">
+        <ul class="category-list">
+            <li><a href="#" class="active"><i class="fas fa-th-large"></i> 全部</a></li>
+            <li><a href="#"><i class="fas fa-search"></i> 搜索引擎</a></li>
+            <li><a href="#"><i class="fas fa-users"></i> 社交媒体</a></li>
+            <li><a href="#"><i class="fas fa-newspaper"></i> 新闻资讯</a></li>
+            <li><a href="#"><i class="fas fa-graduation-cap"></i> 学习资源</a></li>
+            <li><a href="#"><i class="fas fa-tools"></i> 工具效率</a></li>
+            <li><a href="#"><i class="fas fa-gamepad"></i> 娱乐休闲</a></li>
+            <li><a href="#"><i class="fas fa-shopping-cart"></i> 购物商城</a></li>
+            <li><a href="#"><i class="fab fa-microsoft"></i> 微软产品</a></li>
+        </ul>
+    </nav>
+    
+    <!-- 主要内容区 -->
+    <div class="container">
+        <h2 class="section-title"><i class="fas fa-fire"></i> 热门网站推荐</h2>
+        
+        <div class="websites-grid">
+            <!-- 网站卡片1 -->
+            <div class="website-card">
+                <div class="card-header" style="background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);">
+                    <h3>百度</h3>
+                    <p>全球最大的中文搜索引擎</p>
+                </div>
+                <div class="card-body">
+                    <p>百度是全球最大的中文搜索引擎，提供网页、图片、视频、地图等搜索服务。</p>
+                    <a href="https://www.baidu.com" class="visit-btn" target="_blank"><i class="fas fa-external-link-alt"></i> 访问网站</a>
+                </div>
+            </div>
+            
+            <!-- 网站卡片2 -->
+            <div class="website-card">
+                <div class="card-header" style="background: linear-gradient(135deg, #0f9d58 0%, #3cba92 100%);">
+                    <h3>知乎</h3>
+                    <p>中文互联网高质量的问答社区</p>
+                </div>
+                <div class="card-body">
+                    <p>知乎是一个真实的网络问答社区，分享彼此的知识、经验和见解。</p>
+                    <a href="https://www.zhihu.com" class="visit-btn" target="_blank"><i class="fas fa-external-link-alt"></i> 访问网站</a>
+                </div>
+            </div>
+            
+            <!-- 网站卡片3 -->
+            <div class="website-card">
+                <div class="card-header" style="background: linear-gradient(135deg, #fb7299 0%, #ff9db5 100%);">
+                    <h3>哔哩哔哩</h3>
+                    <p>国内知名的视频弹幕网站</p>
+                </div>
+                <div class="card-body">
+                    <p>哔哩哔哩是国内知名的视频弹幕网站，这里有最及时的动漫新番，活跃的ACG氛围。</p>
+                    <a href="https://www.bilibili.com" class="visit-btn" target="_blank"><i class="fas fa-external-link-alt"></i> 访问网站</a>
+                </div>
+            </div>
+            
+            <!-- 网站卡片4 -->
+            <div class="website-card">
+                <div class="card-header" style="background: linear-gradient(135deg, #333 0%, #555 100%);">
+                    <h3>GitHub</h3>
+                    <p>全球最大的代码托管平台</p>
+                </div>
+                <div class="card-body">
+                    <p>GitHub是一个面向开源及私有软件项目的托管平台，因为只支持Git作为唯一的版本库格式进行托管。</p>
+                    <a href="https://github.com" class="visit-btn" target="_blank"><i class="fas fa-external-link-alt"></i> 访问网站</a>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title"><i class="fab fa-microsoft"></i> 微软产品</h2>
+        
+        <div class="websites-grid">
+            <!-- 微软官网 -->
+            <div class="website-card microsoft-product">
+                <div class="card-header">
+                    <h3><i class="fab fa-microsoft"></i> 微软官网</h3>
+                    <p>全球领先的软件、服务、设备和解决方案提供商</p>
+                </div>
+                <div class="card-body">
+                    <p>微软是全球领先的软件、服务、设备和解决方案提供商，致力于帮助个人和企业用户全面发挥潜力。</p>
+                    <a href="https://www.microsoft.com" class="visit-btn" target="_blank"><i class="fas fa-external-link-alt"></i> 访问网站</a>
+                </div>
+            </div>
+            
+            <!-- 必应 -->
+            <div class="website-card bing-product">
+                <div class="card-header">
+                    <h3><i class="fas fa-search"></i> 必应</h3>
+                    <p>微软推出的搜索引擎</p>
+                </div>
+                <div class="card-body">
+                    <p>必应是微软公司推出的搜索引擎，提供网页、图片、视频、词典、翻译、资讯等搜索服务。</p>
+                    <a href="https://www.bing.com" class="visit-btn" target="_blank"><i class="fas fa-external-link-alt"></i> 访问网站</a>
+                </div>
+            </div>
+            
+            <!-- OneDrive -->
+            <div class="website-card onedrive-product">
+                <div class="card-header">
+                    <h3><i class="fas fa-cloud"></i> OneDrive</h3>
+                    <p>微软提供的云存储服务</p>
+                </div>
+                <div class="card-body">
+                    <p>OneDrive是微软推出的云存储服务，可以存储照片、视频、文档等文件，并在各个设备间同步。</p>
+                    <a href="https://www.onedrive.com" class="visit-btn" target="_blank"><i class="fas fa-external-link-alt"></i> 访问网站</a>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title"><i class="fas fa-graduation-cap"></i> 学习资源网站</h2>
+        
+        <div class="websites-grid">
+            <!-- 网站卡片7 -->
+            <div class="website-card">
+                <div class="card-header" style="background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);">
+                    <h3>中国大学MOOC</h3>
+                    <p>优质的中文MOOC学习平台</p>
+                </div>
+                <div class="card-body">
+                    <p>中国大学MOOC是爱课程网携手网易云课堂打造的在线学习平台，承接教育部国家精品开放课程任务。</p>
+                    <a href="https://www.icourse163.org" class="visit-btn" target="_blank"><i class="fas fa-external-link-alt"></i> 访问网站</a>
+                </div>
+            </div>
+            
+            <!-- 网站卡片8 -->
+            <div class="website-card">
+                <div class="card-header" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);">
+                    <h3>慕课网</h3>
+                    <p>程序员的梦工厂</p>
+                </div>
+                <div class="card-body">
+                    <p>慕课网是垂直的互联网IT技能免费学习网站，提供丰富的移动端开发、前端开发等视频教程资源公开课。</p>
+                    <a href="https://www.imooc.com" class="visit-btn" target="_blank"><i class="fas fa-external-link-alt"></i> 访问网站</a>
+                </div>
+            </div>
+            
+            <!-- 新添加的教育平台 -->
+            <div class="website-card">
+                <div class="card-header" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);">
+                    <h3><i class="fas fa-school"></i> 瑟谷学校</h3>
+                    <p>创新教育平台</p>
+                </div>
+                <div class="card-body">
+                    <p>一个专注于创新教育理念和实践的学习平台，提供丰富的教育资源和学习工具。</p>
+                    <a href="https://hdnbschool.seiue.com/" class="visit-btn" target="_blank"><i class="fas fa-external-link-alt"></i> 访问网站</a>
+                    <div class="security-notice">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>请注意：该网站关联域名可能存在安全风险:cite[1]</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer>
+        <p>网站大全 &copy; 2023 - 为您精选互联网优质资源</p>
+        <p>本页面仅用于展示，所有网站版权归原作者所有</p>
+        <ul class="footer-links">
+            <li><a href="#"><i class="fas fa-info-circle"></i> 关于我们</a></li>
+            <li><a href="#"><i class="fas fa-envelope"></i> 联系我们</a></li>
+            <li><a href="#"><i class="fas fa-plus-circle"></i> 提交网站</a></li>
+            <li><a href="#"><i class="fas fa-shield-alt"></i> 隐私政策</a></li>
+        </ul>
+    </footer>
+    
+    <script>
+        // 简单的搜索功能实现
+        document.querySelector('.search-box button').addEventListener('click', function() {
+            const searchTerm = document.querySelector('.search-box input').value;
+            if(searchTerm.trim() !== '') {
+                alert(`搜索: ${searchTerm}\n此功能为演示，实际项目中需要连接后端数据库`);
+            }
+        });
+        
+        // 分类导航点击效果
+        const categoryLinks = document.querySelectorAll('.category-list a');
+        categoryLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                categoryLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                // 滚动到对应分类区域
+                const category = this.textContent.trim();
+                if(category === '微软产品') {
+                    document.querySelector('.section-title:nth-child(3)').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                } else if(category === '学习资源') {
+                    document.querySelector('.section-title:nth-child(5)').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                } else {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 为卡片添加随机延迟动画
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.website-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.style.animation = 'fadeInUp 0.5s ease forwards';
+            });
+        });
+    </script>
+</body>
+</html>
